@@ -35,83 +35,83 @@ using System.Threading.Tasks;
 namespace MonoDevelop.AddinMaker.Editor
 {
 	//TODO: this schema system could be pushed down into MonoDevelop.Xml
-	abstract class SchemaBasedEditorExtension : BaseXmlEditorExtension
-	{
-		SchemaElement schema;
+	//abstract class SchemaBasedEditorExtension : BaseXmlEditorExtension
+	//{
+	//	SchemaElement schema;
 
-		public override bool IsValidInContext (MonoDevelop.Ide.Editor.DocumentContext context)
-		{
-			return base.IsValidInContext (context) && context.HasProject && context.Project.HasFlavor<AddinProjectFlavor> ();
-		}
+	//	public override bool IsValidInContext (MonoDevelop.Ide.Editor.DocumentContext context)
+	//	{
+	//		return base.IsValidInContext (context) && context.HasProject && context.Project.HasFlavor<AddinProjectFlavor> ();
+	//	}
 
-		protected override void Initialize ()
-		{
-			base.Initialize ();
-			schema = CreateSchema ();
-		}
+	//	protected override void Initialize ()
+	//	{
+	//		base.Initialize ();
+	//		schema = CreateSchema ();
+	//	}
 
-		protected abstract SchemaElement CreateSchema ();
+	//	protected abstract SchemaElement CreateSchema ();
 
-		protected SchemaElement GetSchemaItem (IEnumerable<XObject> path, out XElement el)
-		{
-			el = null;
-			SchemaElement item = schema;
-			foreach (var val in path) {
-				el = val as XElement;
-				if (el == null)
-					break;
-				item = item.GetChild (el);
-			}
-			return item;
-		}
+	//	protected SchemaElement GetSchemaItem (IEnumerable<XObject> path, out XElement el)
+	//	{
+	//		el = null;
+	//		SchemaElement item = schema;
+	//		foreach (var val in path) {
+	//			el = val as XElement;
+	//			if (el == null)
+	//				break;
+	//			item = item.GetChild (el);
+	//		}
+	//		return item;
+	//	}
 
-		protected SchemaElement GetSchemaItem (out XElement el)
-		{
-			return GetSchemaItem (GetCurrentPath (), out el);
-		}
+	//	protected SchemaElement GetSchemaItem (out XElement el)
+	//	{
+	//		return GetSchemaItem (GetCurrentPath (), out el);
+	//	}
 
-		protected SchemaElement GetSchemaItem ()
-		{
-			XElement el;
-			return GetSchemaItem (GetCurrentPath (), out el);
-		}
+	//	protected SchemaElement GetSchemaItem ()
+	//	{
+	//		XElement el;
+	//		return GetSchemaItem (GetCurrentPath (), out el);
+	//	}
 
-		protected override Task<CompletionDataList> GetElementCompletions (CancellationToken token)
-		{
-			var list = new CompletionDataList();
-			AddMiscBeginTags (list);
+	//	protected override Task<CompletionDataList> GetElementCompletions (CancellationToken token)
+	//	{
+	//		var list = new CompletionDataList();
+	//		AddMiscBeginTags (list);
 
-			XElement el;
-			var item = GetSchemaItem (out el);
-			if (item != null) {
-				item.GetElementCompletions (list, el);
-			}
-			return Task.FromResult (list);
-		}
+	//		XElement el;
+	//		var item = GetSchemaItem (out el);
+	//		if (item != null) {
+	//			item.GetElementCompletions (list, el);
+	//		}
+	//		return Task.FromResult (list);
+	//	}
 
-		protected override Task<CompletionDataList> GetAttributeCompletions (IAttributedXObject attributedOb, Dictionary<string, string> existingAtts, CancellationToken token)
-		{
-			XElement el;
-			var item = GetSchemaItem (GetCurrentPath (), out el);
-			var list = new CompletionDataList ();
+	//	protected override Task<CompletionDataList> GetAttributeCompletions (IAttributedXObject attributedOb, Dictionary<string, string> existingAtts, CancellationToken token)
+	//	{
+	//		XElement el;
+	//		var item = GetSchemaItem (GetCurrentPath (), out el);
+	//		var list = new CompletionDataList ();
 
-			if (item != null) {
-				item.GetAttributeCompletions (list, attributedOb, existingAtts);
-			}
-			return Task.FromResult (list);
-		}
+	//		if (item != null) {
+	//			item.GetAttributeCompletions (list, attributedOb, existingAtts);
+	//		}
+	//		return Task.FromResult (list);
+	//	}
 
-		protected override Task<CompletionDataList> GetAttributeValueCompletions (IAttributedXObject attributedOb, XAttribute att, CancellationToken token)
-		{
-			XElement el;
-			var path = GetCurrentPath ();
-			var item = GetSchemaItem (path.Take (path.Count - 1), out el);
-			var list = new CompletionDataList ();
+	//	protected override Task<CompletionDataList> GetAttributeValueCompletions (IAttributedXObject attributedOb, XAttribute att, CancellationToken token)
+	//	{
+	//		XElement el;
+	//		var path = GetCurrentPath ();
+	//		var item = GetSchemaItem (path.Take (path.Count - 1), out el);
+	//		var list = new CompletionDataList ();
 
-			if (item != null) {
-				item.GetAttributeValueCompletions (list, attributedOb, att);
-			}
-			return Task.FromResult (list);
-		}
-	}
+	//		if (item != null) {
+	//			item.GetAttributeValueCompletions (list, attributedOb, att);
+	//		}
+	//		return Task.FromResult (list);
+	//	}
+	//}
 }

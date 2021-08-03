@@ -39,10 +39,11 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
 
                 if (resolved != null) {
                     //delay the selection, or this will re-select is
-                    GLib.Timeout.Add (200, () => {
-                        tree.SelectObject (resolved);
-                        return false;
-                    });
+
+                    //GLib.Timeout.Add (200, () => {
+                    //    tree.SelectObject (resolved);
+                    //    return false;
+                    //});
                 }
             }
 		}

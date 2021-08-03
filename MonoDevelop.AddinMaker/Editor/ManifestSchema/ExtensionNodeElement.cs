@@ -178,7 +178,7 @@ namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
 			string GenerateDescriptionMarkup ()
 			{
 				var sb = new StringBuilder ();
-				sb.AppendFormat ("{0}", GLib.Markup.EscapeText (att.Name));
+				sb.AppendFormat ("{0}", att.Name);
 				sb.AppendLine ();
 
 				if (att.Required) {
@@ -195,7 +195,7 @@ namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
 					sb.Append ("<i>Type");
 					if (string.IsNullOrEmpty (att.Type)) {
 						sb.Append (": ");
-						sb.Append (GLib.Markup.EscapeText (att.Type));
+						sb.Append (att.Type);
 					}
 					sb.AppendLine ("</i>");
 					break;
@@ -212,7 +212,7 @@ namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
 				}
 
 				sb.AppendLine ();
-				sb.AppendLine (GLib.Markup.EscapeText (att.Description));
+				sb.AppendLine (att.Description);
 
 				return sb.ToString ();
 			}

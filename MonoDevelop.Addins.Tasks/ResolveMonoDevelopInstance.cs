@@ -91,7 +91,7 @@ namespace MonoDevelop.Addins.Tasks
 			bool MDCoreExists() => File.Exists (Path.Combine (BinDir, "MonoDevelop.Core.dll"));
 
 			if (!string.IsNullOrEmpty (AppDir)) {
-				BinDir = Path.Combine (AppDir, "Contents", "Resources", "lib", "monodevelop", "bin");
+				BinDir = Path.Combine (AppDir, "Contents", "MonoBundle");
 				if (!MDCoreExists ()) {
 					Log.LogError ("The provided MDAppDir value does not point to a valid instance of instance of Visual Studio for Mac or MonoDevelop.");
 					return false;
@@ -113,8 +113,8 @@ namespace MonoDevelop.Addins.Tasks
 					"Xamarin Studio", "bin"
 				);
 			} else if (Platform.IsMac) {
-				string appName = "Visual Studio";
-				BinDir = $"/Applications/{appName}.app/Contents/Resources/lib/monodevelop/bin";
+				string appName = "Visual Studio (Preview)";
+				BinDir = $"/Applications/{appName}.app/Contents/MonoBundle";
 				//fall back to old pre-Yosemite location
 				if (!Directory.Exists (BinDir)) {
 					BinDir = $"/Applications/{appName}.app/Contents/MacOS/lib/monodevelop/bin";

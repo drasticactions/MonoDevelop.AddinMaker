@@ -39,7 +39,6 @@
   <ItemGroup Condition="'$(EnableDefaultItems)'=='True' and '$(EnableDefaultNoneItems)'=='True'">
     <None Remove="**\*.addin.xml" />
   </ItemGroup>
-
   <!-- always reference the core addins and assemblies -->
   <ItemGroup>
     <Reference Include="System" />
@@ -47,23 +46,8 @@
     <Reference Include="System.Xml" />
     <AddinReference Include="MonoDevelop.Core"/>
     <AddinReference Include="MonoDevelop.Ide"/>
-    <!-- we depend on GTK# and friends but it's not in bin -->
-    <Reference Include="gtk-sharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="atk-sharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="glib-sharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="gdk-sharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="pango-sharp">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Mono.Cairo">
+    <Reference Include="Xamarin.Mac">
+      <HintPath>\Applications\Visual Studio %28Preview%29.app\Contents\MonoBundle\Xamarin.Mac.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <!-- this is in bin, but core addins don't use it, so we have to make it explicit -->

@@ -125,7 +125,7 @@
 	</Extension>
 
 	<Extension path="/MonoDevelop/Ide/Pads">
-		<Pad class="MonoDevelop.AddinMaker.Pads.EditorTagVisualizerPad" _label="Editor Tags" defaultPlacement="right" />
-		<Pad class="MonoDevelop.AddinMaker.Pads.RoslynSyntaxVisualizerPad" _label="Syntax Tree" defaultPlacement="right" />
+		<!--<Pad class="MonoDevelop.AddinMaker.Pads.EditorTagVisualizerPad" _label="Editor Tags" defaultPlacement="right" />
+		<Pad class="MonoDevelop.AddinMaker.Pads.RoslynSyntaxVisualizerPad" _label="Syntax Tree" defaultPlacement="right" />-->
 	</Extension>
 </ExtensionModel>

@@ -1,16 +1,25 @@
-CONFIG?=Debug
-SLNFILE=MonoDevelop.AddinMaker.sln
+CONFIG?=Release
+PROJECT_NAME=MonoDevelop.AddinMaker
+FRAMEWORK_FOLDER=net472
+VERSION=1.7.0
+
+VS_PATH?=/Applications/Visual\ Studio\ \(Preview\).app
+VS_DEBUG_PATH?=../vsmac/main/build/bin/VisualStudio.app
 
 all: restore
-	msbuild ${SLNFILE} /p:Configuration=${CONFIG} ${ARGS}
+	msbuild ${PROJECT_NAME}.sln /p:Configuration=${CONFIG} ${ARGS}
 
 clean:
-	msbuild ${SLNFILE} /p:Configuration=${CONFIG} /t:Clean ${ARGS}
+	msbuild ${PROJECT_NAME}.sln /p:Configuration=${CONFIG} /t:Clean ${ARGS}
 
 install: restore
-	msbuild ${SLNFILE} /p:InstallAddin=True /p:Configuration=${CONFIG} ${ARGS}
+	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup pack ./${PROJECT_NAME}/bin/${CONFIG}/${FRAMEWORK_FOLDER}/${PROJECT_NAME}.dll
+	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup install ./${PROJECT_NAME}/bin/${CONFIG}/${FRAMEWORK_FOLDER}/${PROJECT_NAME}_${VERSION}.mpack
+
+uninstall: restore
+	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup uninstall AddinMaker
 
 restore:
-	msbuild ${SLNFILE} /t:Restore /p:Configuration=${CONFIG} ${ARGS}
+	msbuild ${PROJECT_NAME}.sln /t:Restore /p:Configuration=${CONFIG} ${ARGS}
 
 .PHONY: all clean install restore

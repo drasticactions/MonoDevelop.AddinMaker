@@ -45,20 +45,23 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
 		}
 	}
 
-	class AddinDetailWidget : VBox
+	class AddinDetailWidget : AppKit.NSStackView
 	{
 		public Addin Addin { get; private set; }
 
 		public AddinDetailWidget (Addin addin)
 		{
 			this.Addin = addin;
-
-			BorderWidth = 12;
-
+			Distribution = AppKit.NSStackViewDistribution.Fill;
+			Orientation = AppKit.NSUserInterfaceLayoutOrientation.Vertical;
+			TranslatesAutoresizingMaskIntoConstraints = false;
 			var desc = Addin.Description;
-			PackStart (new Label { Markup = string.Format ("<big><tt>{0}</tt></big>\n{1}\n{2}", desc.AddinId, desc.Name, desc.Description)}, true, false, 0);
-
-			ShowAll ();
+			var label = new AppKit.NSTextField() {
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				Bezeled = false, DrawsBackground = false, Editable = false, Selectable= false,
+				StringValue = string.Format ("{0} {1} {2}", desc.AddinId, desc.Name, desc.Description)
+			};
+			AddArrangedSubview(label);
 		}
 	}
 }

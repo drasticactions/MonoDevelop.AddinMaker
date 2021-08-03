@@ -11,6 +11,17 @@ using MonoDevelop.Projects;
 
 namespace MonoDevelop.AddinMaker
 {
+    class NativeHelper
+    {
+		public static void ShowNotImplemented()
+        {
+			AppKit.NSAlert alert = new AppKit.NSAlert ();
+			alert.InformativeText = "Not implemented";
+			alert.AddButton ("OK");
+			alert.BeginSheet (alert.Window);
+		} 
+    }
+
 	class AddinReferencesNodeBuilder : TypeNodeBuilder
 	{
 		public override Type NodeDataType
@@ -125,22 +136,23 @@ namespace MonoDevelop.AddinMaker
 					return;
 				}
 
-				var dialog = new AddAddinReferenceDialog (allAddins);
-				Addin[] selectedAddins;
-				try {
-					if (MessageService.RunCustomDialog (dialog) != (int)Gtk.ResponseType.Ok)
-						return;
-					selectedAddins = dialog.GetSelectedAddins ();
-				} finally {
-					dialog.Destroy ();
-				}
+				NativeHelper.ShowNotImplemented();
+				//var dialog = new AddAddinReferenceDialog (allAddins);
+				//Addin[] selectedAddins;
+				//try {
+				//	if (MessageService.RunCustomDialog (dialog) != (int)Gtk.ResponseType.Ok)
+				//		return;
+				//	selectedAddins = dialog.GetSelectedAddins ();
+				//} finally {
+				//	dialog.Destroy ();
+				//}
 
-				//HACK: we have to ToList() or the event handlers attached to the
-				//collection will all enumerate the list and get different copies
-				var references = selectedAddins.Select (a => new AddinReference (AddinHelpers.GetUnversionedId (a))).ToList ();
+				////HACK: we have to ToList() or the event handlers attached to the
+				////collection will all enumerate the list and get different copies
+				//var references = selectedAddins.Select (a => new AddinReference (AddinHelpers.GetUnversionedId (a))).ToList ();
 
-				addins.AddRange (references);
-				IdeApp.ProjectOperations.SaveAsync (addins.Parent.Project);
+				//addins.AddRange (references);
+				//IdeApp.ProjectOperations.SaveAsync (addins.Parent.Project);
 			}
 
 			public override void ActivateItem ()

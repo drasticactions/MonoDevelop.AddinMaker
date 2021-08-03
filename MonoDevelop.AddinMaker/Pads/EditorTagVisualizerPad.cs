@@ -6,23 +6,23 @@ using MonoDevelop.Ide.Gui;
 
 namespace MonoDevelop.AddinMaker.Pads
 {
-	class EditorTagVisualizerPad : PadContent
-	{
-		Control control;
+	//class EditorTagVisualizerPad : PadContent
+	//{
+	//	Control control;
 
-		public override Control Control => control;
+	//	public override Control Control => control;
 
-		protected override void Initialize (IPadWindow window)
-		{
-			base.Initialize (window);
-			control = new EditorTagVisualizer ();
-		}
+	//	protected override void Initialize (IPadWindow window)
+	//	{
+	//		base.Initialize (window);
+	//		control = new EditorTagVisualizer ();
+	//	}
 
-		public override void Dispose ()
-		{
-			base.Dispose ();
-			control?.Dispose ();
-			control = null;
-		}
-	}
+	//	public override void Dispose ()
+	//	{
+	//		base.Dispose ();
+	//		control?.Dispose ();
+	//		control = null;
+	//	}
+	//}
 }

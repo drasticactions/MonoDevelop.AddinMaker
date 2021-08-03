@@ -6,23 +6,23 @@ using MonoDevelop.Ide.Gui;
 
 namespace MonoDevelop.AddinMaker.Pads
 {
-	class RoslynSyntaxVisualizerPad : PadContent
-	{
-		Control control;
+	//class RoslynSyntaxVisualizerPad : PadContent
+	//{
+	//	Control control;
 
-		public override Control Control => control;
+	//	public override Control Control => control;
 
-		protected override void Initialize (IPadWindow window)
-		{
-			base.Initialize (window);
-			control = new RoslynSyntaxVisualizer ();
-		}
+	//	protected override void Initialize (IPadWindow window)
+	//	{
+	//		base.Initialize (window);
+	//		control = new RoslynSyntaxVisualizer ();
+	//	}
 
-		public override void Dispose ()
-		{
-			base.Dispose ();
-			control?.Dispose ();
-			control = null;
-		}
-	}
+	//	public override void Dispose ()
+	//	{
+	//		base.Dispose ();
+	//		control?.Dispose ();
+	//		control = null;
+	//	}
+	//}
 }

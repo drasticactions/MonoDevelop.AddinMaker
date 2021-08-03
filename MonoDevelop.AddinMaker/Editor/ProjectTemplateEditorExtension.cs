@@ -26,22 +26,22 @@
 
 namespace MonoDevelop.AddinMaker.Editor
 {
-	class ProjectTemplateEditorExtension : SchemaBasedEditorExtension
-	{
-		public override bool IsValidInContext (MonoDevelop.Ide.Editor.DocumentContext context)
-		{
-			return base.IsValidInContext (context) && context.HasProject && context.Project.HasFlavor<AddinProjectFlavor> ();
-		}
+	//class ProjectTemplateEditorExtension : SchemaBasedEditorExtension
+	//{
+	//	public override bool IsValidInContext (MonoDevelop.Ide.Editor.DocumentContext context)
+	//	{
+	//		return base.IsValidInContext (context) && context.HasProject && context.Project.HasFlavor<AddinProjectFlavor> ();
+	//	}
 
-		protected override SchemaElement CreateSchema ()
-		{
-			return new SchemaElement (null, null, new[] {
-				new SchemaElement ("Template", "Root element for file templates", new[] {
-					new SchemaElement ("TemplateConfiguration", "Metadata for the template"),
-					new SchemaElement ("Actions", "Actions to be run after the project is created"),
-					new SchemaElement ("Combine", "The solution to be created"),
-				})
-			});
-		}
-	}
+	//	protected override SchemaElement CreateSchema ()
+	//	{
+	//		return new SchemaElement (null, null, new[] {
+	//			new SchemaElement ("Template", "Root element for file templates", new[] {
+	//				new SchemaElement ("TemplateConfiguration", "Metadata for the template"),
+	//				new SchemaElement ("Actions", "Actions to be run after the project is created"),
+	//				new SchemaElement ("Combine", "The solution to be created"),
+	//			})
+	//		});
+	//	}
+	//}
 }

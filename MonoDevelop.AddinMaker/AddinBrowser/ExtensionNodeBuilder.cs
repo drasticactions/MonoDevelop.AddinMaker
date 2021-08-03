@@ -30,19 +30,22 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
 		}
 	}
 
-	class ExtensionDetailWidget : VBox
+	class ExtensionDetailWidget : AppKit.NSStackView
 	{
 		public Extension Extension { get; private set; }
 
 		public ExtensionDetailWidget (Extension ext)
 		{
 			this.Extension = ext;
-
-			BorderWidth = 12;
-
-			PackStart (new Label { Markup = string.Format ("<big><tt>{0}</tt></big>", ext.Path)}, true, false, 0);
-
-			ShowAll ();
+			Distribution = AppKit.NSStackViewDistribution.Fill;
+			Orientation = AppKit.NSUserInterfaceLayoutOrientation.Vertical;
+			TranslatesAutoresizingMaskIntoConstraints = false;
+			var label = new AppKit.NSTextField () {
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				Bezeled = false, DrawsBackground = false, Editable = false, Selectable = false,
+				StringValue = ext.Path
+			};
+			AddArrangedSubview (label);
 		}
 	}
 }

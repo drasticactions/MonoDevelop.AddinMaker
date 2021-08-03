@@ -30,19 +30,22 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
 		}
 	}
 
-	class ExtensionPointDetailWidget : VBox
+	class ExtensionPointDetailWidget : AppKit.NSStackView
 	{
 		public ExtensionPoint ExtensionPoint { get; private set; }
 
 		public ExtensionPointDetailWidget (ExtensionPoint ep)
 		{
 			this.ExtensionPoint = ep;
-
-			BorderWidth = 12;
-
-			PackStart (new Label { Markup = string.Format ("<big><tt>{0}</tt></big>\n{1}\n{2}", ep.Path, ep.Name, ep.Description)}, true, false, 0);
-
-			ShowAll ();
+			Distribution = AppKit.NSStackViewDistribution.Fill;
+			Orientation = AppKit.NSUserInterfaceLayoutOrientation.Vertical;
+			TranslatesAutoresizingMaskIntoConstraints = false;
+			var label = new AppKit.NSTextField () {
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				Bezeled = false, DrawsBackground = false, Editable = false, Selectable = false,
+				StringValue = string.Format ("<big><tt>{0}</tt></big>\n{1}\n{2}", ep.Path, ep.Name, ep.Description)
+			};
+			AddArrangedSubview (label);
 		}
 	}
 }

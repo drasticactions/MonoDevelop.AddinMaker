@@ -33,7 +33,7 @@ namespace MonoDevelop.AddinMaker
 		{
 			var addin = (AddinReference)dataObject;
 
-			nodeInfo.Label = GLib.Markup.EscapeText (addin.Include);
+			nodeInfo.Label = addin.Include;
 
 			//TODO: custom icon
 			nodeInfo.Icon = Context.GetIcon ("md-reference-package");
@@ -91,7 +91,8 @@ namespace MonoDevelop.AddinMaker
 				var registry = addin.Project.GetFlavor<AddinProjectFlavor> ().AddinRegistry;
 				var resolved = registry.GetAddin (addin.Include);
 				if (resolved != null) {
-					AddinBrowserViewContent.Open (registry, resolved).Ignore ();
+					NativeHelper.ShowNotImplemented();
+					//AddinBrowserViewContent.Open (registry, resolved).Ignore ();
 				}
 			}
 		}
