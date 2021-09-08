@@ -92,6 +92,7 @@ namespace MonoDevelop.AddinMaker
 				var resolved = registry.GetAddin (addin.Include);
 				if (resolved != null) {
 					NativeHelper.ShowNotImplemented();
+					//TODO: port to native
 					//AddinBrowserViewContent.Open (registry, resolved).Ignore ();
 				}
 			}

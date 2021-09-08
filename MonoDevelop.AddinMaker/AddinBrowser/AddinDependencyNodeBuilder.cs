@@ -31,7 +31,9 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
 		{
 			public override void ActivateItem ()
 			{
-                var dependency = (AddinDependency)CurrentNode.DataItem;
+				//TODO: port to native
+				/*
+				var dependency = (AddinDependency)CurrentNode.DataItem;
 				var controller = (AddinTreeViewController)base.Controller;
 
 				var tree = (AddinTreeView)base.Controller.Control;
@@ -45,6 +47,7 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
                     //    return false;
                     //});
                 }
+				*/
             }
 		}
 	}

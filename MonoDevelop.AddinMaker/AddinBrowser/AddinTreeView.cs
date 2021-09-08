@@ -13,12 +13,11 @@ namespace MonoDevelop.AddinMaker.AddinBrowser
 		}
 	}
 
-	class AddinTreeView : ExtensibleTreeView
+	class AddinTreeView : AppKit.NSView
 	{
 		internal AddinTreeViewController Controller;
 
-		public AddinTreeView (AddinTreeViewController controller) : base (
-			controller)
+		public AddinTreeView (AddinTreeViewController controller)
         {
 			Controller = controller;
 		}

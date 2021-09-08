@@ -11,6 +11,7 @@ using MonoDevelop.Ide.Navigation;
 
 namespace MonoDevelop.AddinMaker.AddinBrowser
 {
+	//TODO: port to native
 	//class AddinBrowserViewContent : DocumentController, INavigable
 	//{
 	//	AddinBrowserWidget widget;
