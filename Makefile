@@ -16,8 +16,15 @@ install: restore
 	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup pack ./${PROJECT_NAME}/bin/${CONFIG}/${FRAMEWORK_FOLDER}/${PROJECT_NAME}.dll
 	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup install ./${PROJECT_NAME}/bin/${CONFIG}/${FRAMEWORK_FOLDER}/${PROJECT_NAME}_${VERSION}.mpack
 
+install_debug: restore
+	mono $(VS_DEBUG_PATH)/Contents/MonoBundle/vstool.exe setup pack ./${PROJECT_NAME}/bin/${CONFIG}/${FRAMEWORK_FOLDER}/${PROJECT_NAME}.dll
+	mono $(VS_DEBUG_PATH)/Contents/MonoBundle/vstool.exe setup install ./${PROJECT_NAME}/bin/${CONFIG}/${FRAMEWORK_FOLDER}/${PROJECT_NAME}_${VERSION}.mpack
+
 uninstall: restore
-	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup uninstall AddinMaker
+	mono $(VS_PATH)/Contents/MonoBundle/vstool.exe setup uninstall MonoDevelop.AddinMaker
+
+uninstall_debug: restore
+	mono $(VS_DEBUG_PATH)/Contents/MonoBundle/vstool.exe setup uninstall MonoDevelop.AddinMaker
 
 restore:
 	msbuild ${PROJECT_NAME}.sln /t:Restore /p:Configuration=${CONFIG} ${ARGS}
