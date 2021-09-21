@@ -76,10 +76,9 @@ namespace MonoDevelop.AddinMaker
 
 		protected override ExecutionCommand OnCreateExecutionCommand (ConfigurationSelector configSel, DotNetProjectConfiguration configuration, ProjectRunConfiguration runConfiguration)
 		{
-			var cmd = (DotNetExecutionCommand) base.OnCreateExecutionCommand (configSel, configuration, runConfiguration);
-			cmd.Command = GetLaunchAssembly ();
+			var cmd = new HostedDotNetExecutionCommand("/Applications/Visual Studio (Preview).app/Contents/MacOS/VisualStudio");
 			cmd.Arguments = "--no-redirect";
-			cmd.EnvironmentVariables["MONODEVELOP_DEV_ADDINS"] = Project.GetOutputFileName (configSel).ParentDirectory;
+			cmd.EnvironmentVariables ["MONODEVELOP_DEV_ADDINS"] = Project.GetOutputFileName (configSel).ParentDirectory;
 			cmd.EnvironmentVariables ["MONODEVELOP_CONSOLE_LOG_LEVEL"] = "All";
 			return cmd;
 		}
