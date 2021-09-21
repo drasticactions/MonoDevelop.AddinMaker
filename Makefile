@@ -1,7 +1,7 @@
 CONFIG?=Release
 PROJECT_NAME=MonoDevelop.AddinMaker
 FRAMEWORK_FOLDER=net472
-VERSION=1.7.0
+VERSION=1.7.1
 
 VS_PATH?=/Applications/Visual\ Studio\ \(Preview\).app
 VS_DEBUG_PATH?=../vsmac/main/build/bin/VisualStudio.app
