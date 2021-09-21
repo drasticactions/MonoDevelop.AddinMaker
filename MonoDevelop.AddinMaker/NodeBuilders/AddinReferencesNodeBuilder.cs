@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AppKit;
 using Mono.Addins;
 using MonoDevelop.Components.Commands;
 using MonoDevelop.Core;
@@ -114,6 +115,13 @@ namespace MonoDevelop.AddinMaker
 			return -200;
 		}
 
+		static void Center(NSWindow nsParent, NSWindow nsChild)
+        {
+			int x = (int)(nsParent.Frame.Left + (nsParent.Frame.Width - nsChild.Frame.Width) / 2);
+			int y = (int)(nsParent.Frame.Top + (nsParent.Frame.Height - nsChild.Frame.Height) / 2);
+			nsChild.SetFrameOrigin (new CoreGraphics.CGPoint (x, y));
+		}
+
 		class AddinReferenceFolderCommandHandler : NodeCommandHandler
 		{
 			[CommandHandler(AddinCommands.AddAddinReference)]
@@ -136,24 +144,25 @@ namespace MonoDevelop.AddinMaker
 					return;
 				}
 
-				NativeHelper.ShowNotImplemented();
-				//var dialog = new AddAddinReferenceDialog (allAddins);
-				//Addin[] selectedAddins;
-				//try {
-				//	if (MessageService.RunCustomDialog (dialog) != (int)Gtk.ResponseType.Ok)
-				//		return;
-				//	selectedAddins = dialog.GetSelectedAddins ();
-				//} finally {
-				//	dialog.Destroy ();
-				//}
+				var dialog = new AddAddinReferenceViewDialog (allAddins);
+				Addin [] selectedAddins;
 
-				////HACK: we have to ToList() or the event handlers attached to the
-				////collection will all enumerate the list and get different copies
-				//var references = selectedAddins.Select (a => new AddinReference (AddinHelpers.GetUnversionedId (a))).ToList ();
+				var window = MessageService.RootWindow.GetNativeWidget<NSWindow>();
+				window.AddChildWindow (dialog, NSWindowOrderingMode.Above);
 
-				//addins.AddRange (references);
-				//IdeApp.ProjectOperations.SaveAsync (addins.Parent.Project);
-			}
+				Center(window, dialog);
+
+				if (NSApplication.SharedApplication.RunModalForWindow (dialog) != (int)NSModalResponse.OK)
+					return;
+				selectedAddins = dialog.GetSelectedAddins ();
+
+				//HACK: we have to ToList() or the event handlers attached to the
+				//collection will all enumerate the list and get different copies
+				var references = selectedAddins.Select (a => new AddinReference (AddinHelpers.GetUnversionedId (a))).ToList ();
+
+                addins.AddRange (references);
+                IdeApp.ProjectOperations.SaveAsync (addins.Parent.Project);
+            }
 
 			public override void ActivateItem ()
 			{

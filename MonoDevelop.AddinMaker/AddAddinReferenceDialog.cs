@@ -1,120 +1,277 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gtk;
+using AppKit;
+using CoreGraphics;
+using Foundation;
 using Mono.Addins;
-using MonoDevelop.Components;
 using MonoDevelop.Core;
+using ObjCRuntime;
 
 namespace MonoDevelop.AddinMaker
 {
-	//TODO: add a filter entry
-	//class AddAddinReferenceDialog : Gtk.Dialog
-	//{
-	//	readonly Button addButton = new Button (Stock.Add);
-	//	readonly TreeView treeView = new TreeView ();
-	//	readonly ListStore store = new ListStore (typeof(Addin), typeof(bool));
+    class AddinValueCell : StackView
+    {
+        public override CGSize IntrinsicContentSize {
+            get {
+                var textView = (NSTextField)Subviews [0];
+                return new CGSize (textView.IntrinsicContentSize.Width, textView.IntrinsicContentSize.Height + 5);
+            }
+        }
 
-	//	const int COL_ADDIN = 0;
-	//	const int COL_SELECTED = 1;
+        NSButton checkBox;
+        NSTextField titleTextField, subTitleTextField;
 
-	//	int selectedCount;
+        AddAddinReferenceViewDialog dialog => (AddAddinReferenceViewDialog) Window;
 
-	//	public AddAddinReferenceDialog (Addin[] allAddins)
-	//	{
-	//		if (allAddins == null || allAddins.Length == 0)
-	//			throw new ArgumentException ();
+        public AddinValueCell () : base (NSUserInterfaceLayoutOrientation.Horizontal)
+        {
+            checkBox = new NSButton () { TranslatesAutoresizingMaskIntoConstraints = false, Title = "" };
+            checkBox.SetButtonType (NSButtonType.Switch);
+            AddArrangedSubview (checkBox);
 
-	//		Title = GettextCatalog.GetString ("Add Extension Reference");
-	//		DestroyWithParent = true;
-	//		Modal = true;
-	//		HasSeparator = false;
-	//		WidthRequest = 400;
-	//		HeightRequest = 400;
-	//		AllowShrink = false;
-	//		Resizable = true;
+            var verticalTextStack = new StackView (NSUserInterfaceLayoutOrientation.Vertical, 5);
+            AddArrangedSubview (verticalTextStack);
 
-	//		AddActionWidget (new Button (Stock.Cancel), ResponseType.Cancel);
-	//		AddActionWidget (addButton, ResponseType.Ok);
+            titleTextField = new NSTextField () {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                DrawsBackground = false,
+                Editable = false,
+                Bezeled = false,
+                Selectable = false,
+                Font = NSFont.BoldSystemFontOfSize (NSFont.SystemFontSize)
+            };
+            verticalTextStack.AddArrangedSubview (titleTextField);
 
-	//		treeView.HeadersVisible = false;
-	//		treeView.Model = store;
+            subTitleTextField = new NSTextField () {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                DrawsBackground = false,
+                Editable = false,
+                Bezeled = false,
+                Selectable = false,
+                Font = NSFont.SystemFontOfSize (NSFont.SystemFontSize),
+                AlphaValue = 0.7f
+            };
+            verticalTextStack.AddArrangedSubview (subTitleTextField);
 
-	//		var column = new TreeViewColumn ();
-	//		var toggleRenderer = new CellRendererToggle ();
-	//		column.PackStart (toggleRenderer, false);
-	//		column.SetCellDataFunc (toggleRenderer, ToggleCellDataFunc);
+            checkBox.Target = this;
+            checkBox.Action = new Selector (Selector);
+        }
 
-	//		toggleRenderer.Toggled += HandleToggled;
+        [Export (Selector)]
+        void DockButtonActivated (NSObject sender)
+        {
+            var button = (NSButton)sender;
+            data.Value = button.State == NSCellStateValue.On;
 
-	//		var textRenderer = new CellRendererText ();
-	//		column.PackStart (textRenderer, true);
-	//		column.SetCellDataFunc (textRenderer, TextCellDataFunc);
+            dialog.OnButtonActivated ();
+        }
 
-	//		treeView.AppendColumn (column);
-	//		var sw = new CompactScrolledWindow {
-	//			Child = treeView
-	//		};
-	//		VBox.PackStart (sw);
+        const string Selector = "customSelectorName:";
 
-	//		foreach (var addin in allAddins.OrderBy (a => a.Id)) {
-	//			store.AppendValues (addin, false);
-	//		}
+        public void RefreshStates ()
+        {
+            NeedsDisplay = true;
+        }
 
-	//		addButton.Sensitive = false;
+        AddinValue data;
+        internal void SetData (AddinValue data)
+        {
+            this.data = data;
+            titleTextField.StringValue = AddinHelpers.GetUnversionedId (data.Addin);
+            subTitleTextField.StringValue = data.Addin.Name;
+            checkBox.State = data.Value ? NSCellStateValue.On : NSCellStateValue.Off;
+        }
+    }
 
-	//		ShowAll ();
-	//	}
+    class AddinReferenceTableView : NSTableView
+    {
+        const string ColumnName = "DataColumn";
+        const string ColumnTitle = "Reference";
 
-	//	void HandleToggled (object o, ToggledArgs args)
-	//	{
-	//		TreeIter iter;
-	//		Check (store.GetIter (out iter, new TreePath (args.Path)));
-	//		var val = !(bool)store.GetValue (iter, COL_SELECTED);
-	//		store.SetValue (iter, COL_SELECTED, val);
+        public override bool IsFlipped => true;
 
-	//		selectedCount += val ? 1 : -1;
-	//		addButton.Sensitive = selectedCount > 0;
-	//	}
+        public AddinReferenceTableView ()
+        {
+            BackgroundColor = NSColor.Clear;
+            var column = new NSTableColumn (ColumnName);
+            column.Title = ColumnTitle;
+            AddColumn (column);
 
-	//	static void ToggleCellDataFunc (TreeViewColumn column, CellRenderer cell, TreeModel model, TreeIter iter)
-	//	{
-	//		var selected = (bool)model.GetValue (iter, COL_SELECTED);
-	//		var cellRendererToggle = (CellRendererToggle)cell;
-	//		cellRendererToggle.Active = selected;
-	//	}
+            RowHeight = 50;
 
-	//	static void TextCellDataFunc (TreeViewColumn column, CellRenderer cell, TreeModel model, TreeIter iter)
-	//	{
-	//		var addin = (Addin)model.GetValue (iter, COL_ADDIN);
-	//		var markup = string.Format (
-	//			"<b>{0}</b>\n{1}",
-	//			GLib.Markup.EscapeText (AddinHelpers.GetUnversionedId (addin)),
-	//			GLib.Markup.EscapeText (addin.Name)
-	//		);
-	//		var cellRendererText = (CellRendererText)cell;
-	//		cellRendererText.Markup = markup;
-	//	}
+            HeaderView = null;
 
-	//	public Addin[] GetSelectedAddins ()
-	//	{
-	//		var selected = new List<Addin>();
+            DataSource = new AddinReferenceTableViewDataSource ();
+            Delegate = new AddinReferenceTableViewDelegate ();
+        }
 
-	//		TreeIter iter;
-	//		Check (store.GetIterFirst (out iter));
-	//		do {
-	//			if ((bool)store.GetValue (iter, COL_SELECTED)) {
-	//				selected.Add ((Addin)store.GetValue (iter, COL_ADDIN));
-	//			}
-	//		} while (store.IterNext (ref iter));
+        public void Clear ()
+        {
+            ((AddinReferenceTableViewDataSource)DataSource).Clear ();
+            ReloadData ();
+        }
 
-	//		return selected.ToArray ();
-	//	}
+        public List<AddinValue> Data {
+            get => ((AddinReferenceTableViewDataSource)DataSource).Data;
+            set {
+                ((AddinReferenceTableViewDataSource)DataSource).Data = value;
+                ReloadData ();
+            }
+        }
 
-	//	static void Check (bool val)
-	//	{
-	//		if (!val)
-	//			throw new Exception ("TreeStore state is corrupt");
-	//	}
-	//}
+        public AddinValue DataForRow (int row)
+        {
+            var data = Data;
+            if (row < 0 && row > data.Count - 1)
+                return null;
+
+            return data [row];
+        }
+
+        class BuildConfigurationsTableRowView : NSTableRowView
+        {
+            NSView cell;
+
+            public override bool Selected {
+                get {
+                    return base.Selected;
+                }
+                set {
+                    base.Selected = value;
+                    NeedsDisplay = true;
+                }
+            }
+
+            public override void AddSubview (NSView aView)
+            {
+                base.AddSubview (aView);
+                this.cell = aView;
+            }
+        }
+
+        internal class AddinReferenceTableViewDelegate : NSTableViewDelegate
+        {
+            public AddinReferenceTableViewDelegate ()
+            {
+            }
+
+            const string identifer = "myCellIdentifier";
+            public override NSView GetViewForItem (NSTableView tableView, NSTableColumn tableColumn, nint row)
+            {
+                var table = (AddinReferenceTableView)tableView;
+
+                AddinValueCell view = tableView.MakeView (identifer, this) as AddinValueCell;
+                if (view == null) {
+                    view = new AddinValueCell() {
+                        Identifier = identifer
+                    };
+                }
+
+                var data = table.DataForRow ((int)row);
+                if (data != null) {
+                    view.SetData (data);
+                }
+
+                return view;
+            }
+
+            int GetColumnIndex (NSTableView tableView, NSTableColumn tableColumn)
+            {
+                return (int)tableView.FindColumn ((NSString)tableColumn.Identifier);
+            }
+
+            public override NSTableRowView CoreGetRowView (NSTableView tableView, nint row)
+            {
+                return tableView.GetRowView (row, false) ?? new BuildConfigurationsTableRowView ();
+            }
+        }
+
+        internal class AddinReferenceTableViewDataSource : NSTableViewDataSource
+        {
+            readonly List<AddinValue> data = new List<AddinValue> ();
+            internal List<AddinValue> Data {
+                get => data;
+                set {
+                    if (data == value)
+                        return;
+
+                    this.data.Clear ();
+                    this.data.AddRange (value);
+                }
+            }
+
+            public override nint GetRowCount (NSTableView tableView)
+                => data.Count;
+
+            internal void Clear () => data.Clear ();
+        }
+    }
+
+    class AddinValue
+    {
+        bool initValue;
+
+        public Addin Addin { get; private set; }
+        public bool Value { get; set; }
+
+        public bool HasChanged => initValue != Value;
+
+        public AddinValue(Addin addin, bool initValue)
+        {
+            this.Addin = addin;
+            this.initValue = Value = initValue;
+        }
+    }
+
+    class AddAddinReferenceViewDialog : OkCancelDialog
+    {
+        AddinReferenceTableView tableView;
+        readonly List<AddinValue> store = new List<AddinValue> ();
+
+        public AddAddinReferenceViewDialog (Addin [] allAddins)
+        {
+            if (allAddins == null || allAddins.Length == 0)
+                throw new ArgumentException ();
+
+            Title = GettextCatalog.GetString ("Add Extension Reference");
+
+            var frame = Frame;
+            frame.Size = new CoreGraphics.CGSize (481f, 380f);
+            this.SetFrame (frame, true);
+            this.ContentMinSize = this.ContentView.Frame.Size;
+
+            tableView = new AddinReferenceTableView ();
+
+            var scrollView = new NSScrollView () {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                HasVerticalScroller = true,
+            };
+            scrollView.DocumentView = tableView;
+
+            contentStackView.AddArrangedSubview (scrollView);
+            scrollView.LeadingAnchor.ConstraintEqualToAnchor(contentStackView.LeadingAnchor).Active = true;
+            scrollView.TrailingAnchor.ConstraintEqualToAnchor (contentStackView.TrailingAnchor).Active = true;
+
+            scrollView.BorderType = NSBorderType.LineBorder;
+
+            foreach (var addin in allAddins.OrderBy (a => a.Id)) {
+                store.Add (new AddinValue(addin, false));
+            }
+
+            tableView.Data = store;
+
+            okButton.Enabled = false;
+        }
+
+        public Addin [] GetSelectedAddins ()
+        {
+            return store.Where (s => s.Value).Select(s => s.Addin).ToArray();
+        }
+
+        internal void OnButtonActivated ()
+        {
+            okButton.Enabled = store.Any (s => s.HasChanged);
+        }
+    }
 }

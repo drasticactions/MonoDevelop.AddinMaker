@@ -15,9 +15,13 @@
   <ItemGroup>
     <None Remove="Templates\FileTemplate.xml" />
     <None Remove="Templates\FileTemplate.xft.xml" />
+    <None Remove="Views\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoDevelop.Extensions.ProjectTemplates\MonoDevelop.Extensions.ProjectTemplates.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="..\MonoDevelop.AddinMaker.Local.targets" />
 </Project>
