@@ -23,43 +23,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using MonoDevelop.Ide.CodeCompletion;
-using MonoDevelop.Xml.Dom;
+//using MonoDevelop.Ide.CodeCompletion;
+//using MonoDevelop.Xml.Dom;
 
-namespace MonoDevelop.AddinMaker.Editor
-{
-	class SchemaAttribute
-	{
-		public string Name { get; private set; }
-		public string Description { get; private set; }
+//namespace MonoDevelop.AddinMaker.Editor
+//{
+//	class SchemaAttribute
+//	{
+//		public string Name { get; private set; }
+//		public string Description { get; private set; }
 
-		/// <summary>
-		/// Name of attributes that cannot be specified in conjection with this one.
-		/// </summary>
-		public string[] Exclude { get; set; }
+//		/// <summary>
+//		/// Name of attributes that cannot be specified in conjection with this one.
+//		/// </summary>
+//		public string[] Exclude { get; set; }
 
-		public SchemaAttribute (string name, string description, string[] exclude = null)
-		{
-			this.Name = name;
-			this.Description = description;
-			this.Exclude = exclude;
-		}
+//		public SchemaAttribute (string name, string description, string[] exclude = null)
+//		{
+//			this.Name = name;
+//			this.Description = description;
+//			this.Exclude = exclude;
+//		}
 
-		public virtual void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb)
-		{
-		}
-	}
+//		//public virtual void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb)
+//		//{
+//		//}
+//	}
 
-	class BoolSchemaAttribute : SchemaAttribute
-	{
-		public BoolSchemaAttribute (string name, string description, string[] exclude = null) : base (name, description, exclude)
-		{
-		}
+//	class BoolSchemaAttribute : SchemaAttribute
+//	{
+//		public BoolSchemaAttribute (string name, string description, string[] exclude = null) : base (name, description, exclude)
+//		{
+//		}
 
-		public override void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb)
-		{
-			list.Add ("true");
-			list.Add ("false");
-		}
-	}
-}
+//		//public override void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb)
+//		//{
+//		//	list.Add ("true");
+//		//	list.Add ("false");
+//		//}
+//	}
+//}

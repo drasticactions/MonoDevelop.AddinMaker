@@ -92,21 +92,6 @@
 		<CommandItem id = "MonoDevelop.AddinMaker.AddinCommands.AddAddinReference" />
 	</Extension>
 
-	<Extension path = "/MonoDevelop/Ide/TextEditorExtensions">
-		<Class id = "AddinManifestEditorExtension"
-			class = "MonoDevelop.AddinMaker.Editor.AddinManifestEditorExtension"
-			mimeTypes ="application/x-addin+xml"
-			insertbefore="XmlTextEditorExtension" />
-		<Class id = "FileTemplateEditorExtension"
-			class = "MonoDevelop.AddinMaker.Editor.FileTemplateEditorExtension"
-			mimeTypes ="application/x-addin-xft+xml"
-			insertbefore="XmlTextEditorExtension" />
-		<Class id = "ProjectTemplateEditorExtension"
-			class = "MonoDevelop.AddinMaker.Editor.ProjectTemplateEditorExtension"
-			mimeTypes ="application/x-addin-xpt+xml"
-			insertbefore="XmlTextEditorExtension" />
-	</Extension>
-
 	<Extension path = "/MonoDevelop/Core/MimeTypes">
 		<MimeType id="application/x-addin-xft+xml" _description="Add-in file template" baseType="application/xml" insertbefore="application/xml">
 			<File pattern="*.xft.xml" />

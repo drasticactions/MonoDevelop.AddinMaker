@@ -24,20 +24,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
-{
-	class ModuleSchemaItem : SchemaElement
-	{
-		public ModuleSchemaItem (AddinProjectFlavor project) : base (
-			"Module",
-			"Declares an optional extension module",
-			new SchemaElement [] {
-				new RuntimeSchemaElement (),
-				//TODO: filter out the addins already extended by the parent
-				new DependenciesSchemaElement (),
-				//TODO: extensions in a module should able to extend the dependencies of the module
-				new ExtensionElement (project),
-			}
-		) {}
-	}
-}
+//namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
+//{
+//	class ModuleSchemaItem : SchemaElement
+//	{
+//		public ModuleSchemaItem (AddinProjectFlavor project) : base (
+//			"Module",
+//			"Declares an optional extension module",
+//			new SchemaElement [] {
+//				new RuntimeSchemaElement (),
+//				//TODO: filter out the addins already extended by the parent
+//				new DependenciesSchemaElement (),
+//				//TODO: extensions in a module should able to extend the dependencies of the module
+//				new ExtensionElement (project),
+//			}
+//		) {}
+//	}
+//}

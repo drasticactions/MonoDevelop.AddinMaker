@@ -24,26 +24,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
-{
-	//TODO: completion for the type attribute
-	class ExtensionNodeDefinitionElement : SchemaElement
-	{
-		readonly AddinProjectFlavor project;
+//namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
+//{
+//	//TODO: completion for the type attribute
+//	class ExtensionNodeDefinitionElement : SchemaElement
+//	{
+//		readonly AddinProjectFlavor project;
 
-		public ExtensionNodeDefinitionElement (AddinProjectFlavor project) : base (
-			"ExtensionNode",
-			"A type of node allowed in this extension point.",
-			new[] {
-				new SchemaElement ("Description", "Description of what this kind of node represents.")
-			},
-			new [] {
-				new SchemaAttribute ("name", "Name of the node type. When an element is added to an extension point, its name must match one of the declared node types."),
-				new SchemaAttribute ("type", "CLR type that implements this extension node type. It must be a subclass of Mono.Addins.ExtensionNode. If not specified, by default it is Mono.Addins.TypeExtensionNode.")
-			}
-		)
-		{
-			this.project = project;
-		}
-	}
-}
+//		public ExtensionNodeDefinitionElement (AddinProjectFlavor project) : base (
+//			"ExtensionNode",
+//			"A type of node allowed in this extension point.",
+//			new[] {
+//				new SchemaElement ("Description", "Description of what this kind of node represents.")
+//			},
+//			new [] {
+//				new SchemaAttribute ("name", "Name of the node type. When an element is added to an extension point, its name must match one of the declared node types."),
+//				new SchemaAttribute ("type", "CLR type that implements this extension node type. It must be a subclass of Mono.Addins.ExtensionNode. If not specified, by default it is Mono.Addins.TypeExtensionNode.")
+//			}
+//		)
+//		{
+//			this.project = project;
+//		}
+//	}
+//}

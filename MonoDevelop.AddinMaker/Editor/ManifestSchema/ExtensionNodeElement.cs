@@ -24,198 +24,198 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mono.Addins.Description;
-using MonoDevelop.Ide.CodeCompletion;
-using MonoDevelop.Xml.Dom;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using Mono.Addins.Description;
+//using MonoDevelop.Ide.CodeCompletion;
+//using MonoDevelop.Xml.Dom;
 
-namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
-{
-	class ExtensionNodeElement : SchemaElement
-	{
-		readonly AddinProjectFlavor proj;
-		readonly ExtensionNodeType info;
-		readonly ExtensionPoint extensionPoint;
+//namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
+//{
+//	class ExtensionNodeElement : SchemaElement
+//	{
+//		readonly AddinProjectFlavor proj;
+//		readonly ExtensionNodeType info;
+//		readonly ExtensionPoint extensionPoint;
 
-		public ExtensionNodeElement (AddinProjectFlavor proj, ExtensionPoint extensionPoint, ExtensionNodeType info) : base (info.NodeName, info.Description)
-		{
-			this.proj = proj;
-			this.extensionPoint = extensionPoint;
-			this.info = info;
-		}
+//		public ExtensionNodeElement (AddinProjectFlavor proj, ExtensionPoint extensionPoint, ExtensionNodeType info) : base (info.NodeName, info.Description)
+//		{
+//			this.proj = proj;
+//			this.extensionPoint = extensionPoint;
+//			this.info = info;
+//		}
 
-		public override void GetAttributeCompletions (CompletionDataList list, IAttributedXObject attributedOb, Dictionary<string, string> existingAtts)
-		{
-			var required = new NodeCompletionCategory ("Required", 0);
-			var optional = new NodeCompletionCategory ("Optional", 1);
+//		//public override void GetAttributeCompletions (CompletionDataList list, IAttributedXObject attributedOb, Dictionary<string, string> existingAtts)
+//		//{
+//		//	var required = new NodeCompletionCategory ("Required", 0);
+//		//	var optional = new NodeCompletionCategory ("Optional", 1);
 
-			foreach (NodeTypeAttribute att in info.Attributes) {
-				if (!existingAtts.ContainsKey (att.Name)) {
-					var data = new NodeTypeAttributeCompletionData (att) {
-						CompletionCategory = att.Required ? required : optional
-					};
-					list.Add (data);
-				}
-			}
+//		//	foreach (NodeTypeAttribute att in info.Attributes) {
+//		//		if (!existingAtts.ContainsKey (att.Name)) {
+//		//			var data = new NodeTypeAttributeCompletionData (att) {
+//		//				CompletionCategory = att.Required ? required : optional
+//		//			};
+//		//			list.Add (data);
+//		//		}
+//		//	}
 
-			var ordering = new NodeCompletionCategory ("Ordering", 2);
-			if (!existingAtts.ContainsKey ("id")) {
-				list.Add (new CompletionData ("id", null, "ID for the extension, unique in this extension point.") { CompletionCategory = ordering });
-			}
-			if (!existingAtts.ContainsKey ("insertbefore")) {
-				list.Add (new CompletionData ("insertbefore", null, "ID of an existing extension before which to insert this.") { CompletionCategory = ordering });
-			}
-			if (!existingAtts.ContainsKey ("insertafter")) {
-				list.Add (new CompletionData ("insertafter", null, "ID of an existing extension after which to insert this.") { CompletionCategory = ordering });
-			}
-		}
+//		//	var ordering = new NodeCompletionCategory ("Ordering", 2);
+//		//	if (!existingAtts.ContainsKey ("id")) {
+//		//		list.Add (new CompletionData ("id", null, "ID for the extension, unique in this extension point.") { CompletionCategory = ordering });
+//		//	}
+//		//	if (!existingAtts.ContainsKey ("insertbefore")) {
+//		//		list.Add (new CompletionData ("insertbefore", null, "ID of an existing extension before which to insert this.") { CompletionCategory = ordering });
+//		//	}
+//		//	if (!existingAtts.ContainsKey ("insertafter")) {
+//		//		list.Add (new CompletionData ("insertafter", null, "ID of an existing extension after which to insert this.") { CompletionCategory = ordering });
+//		//	}
+//		//}
 
-		public override SchemaElement GetChild (XElement element)
-		{
-			var node = info.GetAllowedNodeTypes ().FirstOrDefault (n => n.NodeName == element.Name.FullName);
-			if (node != null) {
-				return new ExtensionNodeElement (proj, extensionPoint, node);
-			}
+//		public override SchemaElement GetChild (XElement element)
+//		{
+//			var node = info.GetAllowedNodeTypes ().FirstOrDefault (n => n.NodeName == element.Name.FullName);
+//			if (node != null) {
+//				return new ExtensionNodeElement (proj, extensionPoint, node);
+//			}
 
-			return null;
-		}
+//			return null;
+//		}
 
-		public override void GetElementCompletions (CompletionDataList list, XElement element)
-		{
-			foreach (ExtensionNodeType n in info.GetAllowedNodeTypes ()) {
-				list.Add (n.NodeName, null, n.Description);
-			}
-		}
+//		//public override void GetElementCompletions (CompletionDataList list, XElement element)
+//		//{
+//		//	foreach (ExtensionNodeType n in info.GetAllowedNodeTypes ()) {
+//		//		list.Add (n.NodeName, null, n.Description);
+//		//	}
+//		//}
 
-		internal static IEnumerable<Extension> GetExtensions (AddinProjectFlavor project, ExtensionPoint extensionPoint)
-		{
-			//TODO: handle node sets
-			foreach (var addin in extensionPoint.ExtenderAddins) {
-				var modules = project.AddinRegistry.GetAddin (addin).Description.AllModules;
-				foreach (ModuleDescription module in modules) {
-					foreach (Extension extension in module.Extensions) {
-						if (extension.Path == extensionPoint.Path)
-							yield return extension;
-					}
-				}
-			}
-		}
+//		internal static IEnumerable<Extension> GetExtensions (AddinProjectFlavor project, ExtensionPoint extensionPoint)
+//		{
+//			//TODO: handle node sets
+//			foreach (var addin in extensionPoint.ExtenderAddins) {
+//				var modules = project.AddinRegistry.GetAddin (addin).Description.AllModules;
+//				foreach (ModuleDescription module in modules) {
+//					foreach (Extension extension in module.Extensions) {
+//						if (extension.Path == extensionPoint.Path)
+//							yield return extension;
+//					}
+//				}
+//			}
+//		}
 
-		public override void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb, XAttribute att)
-		{
-			var name = att.Name.FullName;
+//		//public override void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb, XAttribute att)
+//		//{
+//		//	var name = att.Name.FullName;
 
-			if (name == "insertbefore" || name == "insertafter") {
-				//TODO: conditions, children
-				foreach (var ext in GetExtensions (proj, extensionPoint)) {
-					foreach (ExtensionNodeDescription node in ext.ExtensionNodes) {
-						if (!string.IsNullOrEmpty (node.Id)) {
-							list.Add (node.Id, null, "From " + node.ParentAddinDescription.AddinId);
-						}
-					}
-				}
-			}
-		}
+//		//	if (name == "insertbefore" || name == "insertafter") {
+//		//		//TODO: conditions, children
+//		//		foreach (var ext in GetExtensions (proj, extensionPoint)) {
+//		//			foreach (ExtensionNodeDescription node in ext.ExtensionNodes) {
+//		//				if (!string.IsNullOrEmpty (node.Id)) {
+//		//					list.Add (node.Id, null, "From " + node.ParentAddinDescription.AddinId);
+//		//				}
+//		//			}
+//		//		}
+//		//	}
+//		//}
 
-		class NodeCompletionCategory : CompletionCategory
-		{
-			readonly int weight;
+//		//class NodeCompletionCategory : CompletionCategory
+//		//{
+//		//	readonly int weight;
 
-			public NodeCompletionCategory (string label, int weight)
-			{
-				DisplayText = label;
-				this.weight = weight;
-			}
+//		//	public NodeCompletionCategory (string label, int weight)
+//		//	{
+//		//		DisplayText = label;
+//		//		this.weight = weight;
+//		//	}
 
-			public override int CompareTo (CompletionCategory other)
-			{
-				var n = other as NodeCompletionCategory;
-				if (n != null)
-					return weight - n.weight;
-				return string.Compare (DisplayText, other.DisplayText, StringComparison.Ordinal);
-			}
-		}
+//		//	public override int CompareTo (CompletionCategory other)
+//		//	{
+//		//		var n = other as NodeCompletionCategory;
+//		//		if (n != null)
+//		//			return weight - n.weight;
+//		//		return string.Compare (DisplayText, other.DisplayText, StringComparison.Ordinal);
+//		//	}
+//		//}
 
-		class NodeTypeAttributeCompletionData : CompletionData
-		{
-			readonly NodeTypeAttribute att;
-			string markup;
+//		//class NodeTypeAttributeCompletionData : CompletionData
+//		//{
+//		//	readonly NodeTypeAttribute att;
+//		//	string markup;
 
-			public NodeTypeAttributeCompletionData (NodeTypeAttribute att)
-			{
-				this.att = att;
-			}
+//		//	public NodeTypeAttributeCompletionData (NodeTypeAttribute att)
+//		//	{
+//		//		this.att = att;
+//		//	}
 
-			public override string DisplayText {
-				get { return att.Name; }
-				set { throw new NotSupportedException (); }
-			}
+//		//	public override string DisplayText {
+//		//		get { return att.Name; }
+//		//		set { throw new NotSupportedException (); }
+//		//	}
 
-			public override string Description {
-				get { return markup ?? (markup = GenerateDescriptionMarkup ()); }
-				set { throw new NotSupportedException (); }
-			}
+//		//	public override string Description {
+//		//		get { return markup ?? (markup = GenerateDescriptionMarkup ()); }
+//		//		set { throw new NotSupportedException (); }
+//		//	}
 
-			public override string CompletionText {
-				get { return att.Name; }
-				set { throw new NotSupportedException (); }
-			}
+//		//	public override string CompletionText {
+//		//		get { return att.Name; }
+//		//		set { throw new NotSupportedException (); }
+//		//	}
 
-			public override DisplayFlags DisplayFlags {
-				get {
-					var flags = DisplayFlags.DescriptionHasMarkup;
-					if (att.Required) {
-						flags |= DisplayFlags.MarkedBold;
-					}
-					return flags;
-				}
-				set { throw new NotSupportedException (); }
-			}
+//		//	public override DisplayFlags DisplayFlags {
+//		//		get {
+//		//			var flags = DisplayFlags.DescriptionHasMarkup;
+//		//			if (att.Required) {
+//		//				flags |= DisplayFlags.MarkedBold;
+//		//			}
+//		//			return flags;
+//		//		}
+//		//		set { throw new NotSupportedException (); }
+//		//	}
 
-			string GenerateDescriptionMarkup ()
-			{
-				var sb = new StringBuilder ();
-				sb.AppendFormat ("{0}", att.Name);
-				sb.AppendLine ();
+//		//	string GenerateDescriptionMarkup ()
+//		//	{
+//		//		var sb = new StringBuilder ();
+//		//		sb.AppendFormat ("{0}", att.Name);
+//		//		sb.AppendLine ();
 
-				if (att.Required) {
-					sb.AppendLine ("<b>Required</b>");
-				}
+//		//		if (att.Required) {
+//		//			sb.AppendLine ("<b>Required</b>");
+//		//		}
 
-				switch (att.ContentType) {
-				case Mono.Addins.ContentType.Text:
-					if (att.Localizable) {
-						sb.AppendLine ("<i>Localizable</i>");
-					}
-					break;
-				case Mono.Addins.ContentType.Class:
-					sb.Append ("<i>Type");
-					if (string.IsNullOrEmpty (att.Type)) {
-						sb.Append (": ");
-						sb.Append (att.Type);
-					}
-					sb.AppendLine ("</i>");
-					break;
-				case Mono.Addins.ContentType.Resource:
-					sb.AppendLine ("<i>Resource</i>");
-					break;
-				case Mono.Addins.ContentType.File:
-					sb.AppendLine ("<i>File</i>");
-					break;
-				}
+//		//		switch (att.ContentType) {
+//		//		case Mono.Addins.ContentType.Text:
+//		//			if (att.Localizable) {
+//		//				sb.AppendLine ("<i>Localizable</i>");
+//		//			}
+//		//			break;
+//		//		case Mono.Addins.ContentType.Class:
+//		//			sb.Append ("<i>Type");
+//		//			if (string.IsNullOrEmpty (att.Type)) {
+//		//				sb.Append (": ");
+//		//				sb.Append (att.Type);
+//		//			}
+//		//			sb.AppendLine ("</i>");
+//		//			break;
+//		//		case Mono.Addins.ContentType.Resource:
+//		//			sb.AppendLine ("<i>Resource</i>");
+//		//			break;
+//		//		case Mono.Addins.ContentType.File:
+//		//			sb.AppendLine ("<i>File</i>");
+//		//			break;
+//		//		}
 
-				if (string.IsNullOrEmpty (att.Description)) {
-					return sb.ToString ();
-				}
+//		//		if (string.IsNullOrEmpty (att.Description)) {
+//		//			return sb.ToString ();
+//		//		}
 
-				sb.AppendLine ();
-				sb.AppendLine (att.Description);
+//		//		sb.AppendLine ();
+//		//		sb.AppendLine (att.Description);
 
-				return sb.ToString ();
-			}
-		}
-	}
-}
+//		//		return sb.ToString ();
+//		//	}
+//		//}
+//	}
+//}

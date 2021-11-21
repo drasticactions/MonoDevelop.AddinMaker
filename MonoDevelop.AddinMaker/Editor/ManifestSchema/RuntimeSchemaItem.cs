@@ -24,38 +24,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
-{
-	class RuntimeSchemaElement : SchemaElement
-	{
-		public RuntimeSchemaElement () : base (
-			"Runtime",
-			"Declares the files that are included in the add-in.",
-			new [] {
-				new SchemaElement (
-					"Import",
-					"A file or assembly to be included in the add-in.",
-					null,
-					new[] {
-						new SchemaAttribute (
-							"assembly",
-							"An assembly to be packaged with the add-in and automatically loaded.",
-							new[] { "file" }
-						),
-						new SchemaAttribute (
-							"file",
-							"A file to be packaged with the add-in.",
-							new[] { "assembly" }
-						)
-					}
-				),
-				new SchemaElement (
-					"ScanExclude",
-					"A path to exclude when scanning the add-in",
-					null,
-					new[] { new SchemaAttribute ("path", "The path to exclude") }
-				),
-			}
-		) {}
-	}
-}
+//namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
+//{
+//	class RuntimeSchemaElement : SchemaElement
+//	{
+//		public RuntimeSchemaElement () : base (
+//			"Runtime",
+//			"Declares the files that are included in the add-in.",
+//			new [] {
+//				new SchemaElement (
+//					"Import",
+//					"A file or assembly to be included in the add-in.",
+//					null,
+//					new[] {
+//						new SchemaAttribute (
+//							"assembly",
+//							"An assembly to be packaged with the add-in and automatically loaded.",
+//							new[] { "file" }
+//						),
+//						new SchemaAttribute (
+//							"file",
+//							"A file to be packaged with the add-in.",
+//							new[] { "assembly" }
+//						)
+//					}
+//				),
+//				new SchemaElement (
+//					"ScanExclude",
+//					"A path to exclude when scanning the add-in",
+//					null,
+//					new[] { new SchemaAttribute ("path", "The path to exclude") }
+//				),
+//			}
+//		) {}
+//	}
+//}

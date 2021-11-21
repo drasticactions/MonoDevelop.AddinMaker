@@ -24,86 +24,86 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Collections.Generic;
-using MonoDevelop.Ide.CodeCompletion;
-using MonoDevelop.Xml.Dom;
-using System.Linq;
+//using System.Collections.Generic;
+//using MonoDevelop.Ide.CodeCompletion;
+//using MonoDevelop.Xml.Dom;
+//using System.Linq;
 
-namespace MonoDevelop.AddinMaker.Editor
-{
-	class SchemaElement
-	{
-		readonly Dictionary<string,SchemaElement> children;
-		readonly Dictionary<string,SchemaAttribute> attributes;
+//namespace MonoDevelop.AddinMaker.Editor
+//{
+//	class SchemaElement
+//	{
+//		readonly Dictionary<string,SchemaElement> children;
+//		readonly Dictionary<string,SchemaAttribute> attributes;
 
-		public SchemaElement (string name, string description, SchemaElement[] children = null, SchemaAttribute[] attributes = null)
-		{
-			Name = name;
-			Description = description;
+//		public SchemaElement (string name, string description, SchemaElement[] children = null, SchemaAttribute[] attributes = null)
+//		{
+//			Name = name;
+//			Description = description;
 
-			if (children != null) {
-				this.children = new Dictionary<string, SchemaElement> ();
-				foreach (var c in children) {
-					this.children.Add (c.Name, c);
-				}
-			}
+//			if (children != null) {
+//				this.children = new Dictionary<string, SchemaElement> ();
+//				foreach (var c in children) {
+//					this.children.Add (c.Name, c);
+//				}
+//			}
 
-			if (attributes != null) {
-				this.attributes = new Dictionary<string, SchemaAttribute> ();
-				foreach (var a in attributes) {
-					this.attributes.Add (a.Name, a);
-				}
-			}
-		}
+//			if (attributes != null) {
+//				this.attributes = new Dictionary<string, SchemaAttribute> ();
+//				foreach (var a in attributes) {
+//					this.attributes.Add (a.Name, a);
+//				}
+//			}
+//		}
 
-		public string Name { get; private set; }
-		public string Description { get; private set; }
+//		public string Name { get; private set; }
+//		public string Description { get; private set; }
 
-		public virtual void GetElementCompletions (CompletionDataList list, XElement element)
-		{
-			if (children == null) {
-				return;
-			}
+//		//public virtual void GetElementCompletions (CompletionDataList list, XElement element)
+//		//{
+//		//	if (children == null) {
+//		//		return;
+//		//	}
 
-			foreach (var c in children) {
-				list.Add (c.Key, null, c.Value.Description);
-			}
-		}
+//		//	foreach (var c in children) {
+//		//		list.Add (c.Key, null, c.Value.Description);
+//		//	}
+//		//}
 
-		public virtual void GetAttributeCompletions (CompletionDataList list, IAttributedXObject attributedOb, Dictionary<string, string> existingAtts)
-		{
-			if (attributes == null) {
-				return;
-			}
+//		//public virtual void GetAttributeCompletions (CompletionDataList list, IAttributedXObject attributedOb, Dictionary<string, string> existingAtts)
+//		//{
+//		//	if (attributes == null) {
+//		//		return;
+//		//	}
 
-			foreach (var a in attributes) {
-				if (existingAtts.ContainsKey (a.Key)) {
-					continue;
-				}
+//		//	foreach (var a in attributes) {
+//		//		if (existingAtts.ContainsKey (a.Key)) {
+//		//			continue;
+//		//		}
 
-				if (a.Value.Exclude != null && a.Value.Exclude.Any (existingAtts.ContainsKey)) {
-					continue;
-				}
+//		//		if (a.Value.Exclude != null && a.Value.Exclude.Any (existingAtts.ContainsKey)) {
+//		//			continue;
+//		//		}
 
-				list.Add (a.Value.Name, null, a.Value.Description);
-			}
-		}
+//		//		list.Add (a.Value.Name, null, a.Value.Description);
+//		//	}
+//		//}
 
-		public virtual void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb, XAttribute att)
-		{
-			SchemaAttribute sca;
-			if (attributes != null && attributes.TryGetValue (att.Name.FullName, out sca)) {
-				sca.GetAttributeValueCompletions (list, attributedOb);
-			}
-		}
+//		//public virtual void GetAttributeValueCompletions (CompletionDataList list, IAttributedXObject attributedOb, XAttribute att)
+//		//{
+//		//	SchemaAttribute sca;
+//		//	if (attributes != null && attributes.TryGetValue (att.Name.FullName, out sca)) {
+//		//		sca.GetAttributeValueCompletions (list, attributedOb);
+//		//	}
+//		//}
 
-		public virtual SchemaElement GetChild (XElement element)
-		{
-			SchemaElement child;
-			if (children != null && children.TryGetValue (element.Name.FullName, out child)) {
-				return child;
-			}
-			return null;
-		}
-	}
-}
+//		public virtual SchemaElement GetChild (XElement element)
+//		{
+//			SchemaElement child;
+//			if (children != null && children.TryGetValue (element.Name.FullName, out child)) {
+//				return child;
+//			}
+//			return null;
+//		}
+//	}
+//}

@@ -24,31 +24,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
-{
+//namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
+//{
 
-	class DependenciesSchemaElement : SchemaElement
-	{
-		public DependenciesSchemaElement () : base (
-			"Dependencies",
-			"Declares dependencies on other add-ins.",
-			new [] {
-				new SchemaElement (
-					"Addin",
-					"Declares a dependency on another add-in.",
-					null,
-					new[] {
-						new SchemaAttribute (
-							"id",
-							"The id of the add-in."
-						),
-						new SchemaAttribute (
-							"version",
-							"The version of the add-in."
-						)
-					}
-				)
-			}
-		) {}
-	}
-}
+//	class DependenciesSchemaElement : SchemaElement
+//	{
+//		public DependenciesSchemaElement () : base (
+//			"Dependencies",
+//			"Declares dependencies on other add-ins.",
+//			new [] {
+//				new SchemaElement (
+//					"Addin",
+//					"Declares a dependency on another add-in.",
+//					null,
+//					new[] {
+//						new SchemaAttribute (
+//							"id",
+//							"The id of the add-in."
+//						),
+//						new SchemaAttribute (
+//							"version",
+//							"The version of the add-in."
+//						)
+//					}
+//				)
+//			}
+//		) {}
+//	}
+//}

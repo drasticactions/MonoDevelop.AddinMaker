@@ -24,22 +24,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
-{
-	class ExtensionPointSchemaElement : SchemaElement
-	{
-		public ExtensionPointSchemaElement (AddinProjectFlavor project) : base (
-			"ExtensionPoint",
-			"Declares an extension point",
-			new [] {
-				new SchemaElement ("Description", "Long description of the extension point."),
-				new ExtensionNodeDefinitionElement (project),
-				new ExtensionNodeSetElement (project),
-			},
-			new[] {
-				new SchemaAttribute ("path", "Path of the extension point."),
-				new SchemaAttribute ("name", "Display name of the extension point (to be shown in documentation)."),
-			}
-		) {}
-	}
-}
+//namespace MonoDevelop.AddinMaker.Editor.ManifestSchema
+//{
+//	class ExtensionPointSchemaElement : SchemaElement
+//	{
+//		public ExtensionPointSchemaElement (AddinProjectFlavor project) : base (
+//			"ExtensionPoint",
+//			"Declares an extension point",
+//			new [] {
+//				new SchemaElement ("Description", "Long description of the extension point."),
+//				new ExtensionNodeDefinitionElement (project),
+//				new ExtensionNodeSetElement (project),
+//			},
+//			new[] {
+//				new SchemaAttribute ("path", "Path of the extension point."),
+//				new SchemaAttribute ("name", "Display name of the extension point (to be shown in documentation)."),
+//			}
+//		) {}
+//	}
+//}
